@@ -1,0 +1,3 @@
+api/*
+!api/includes/
+*_notes/
