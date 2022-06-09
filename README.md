@@ -35,7 +35,7 @@ The API is accessed through the server address. List of commands below (all outp
 
 **/search**
 
- _requires at least one of:_
+ _requires at least one search condition:_
   
     POST serial_number
     POST brand
@@ -56,3 +56,33 @@ _output:_
     device_id_3{"column_name_1":"column_value_1","column_name_2":"column_value_2","column_name_3":"column_value_3",...},
     ...
     }
+
+_sample curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/search/ -d "brand=microsoft&type=laptop" -d "exact=true&return_columns=serial_number,status"
+    
+**/modify-device**
+
+ _requires at least one identifier:_
+ 
+     POST serial_number
+     POST device_id
+     
+_requires at least one change:_
+
+    POST new_type (changes device type - ex: 'new_type=laptop' will change device type to 'laptop')
+    POST new_serial_number (changes device SN - ex: 'new_serial_number=newnumber' will change device SN to 'newnumber')
+    POST new_brand (changes device brand - ex: 'new_brand=microsoft' will change device brand to 'microsoft')
+    POST new_status (valid inputs: "active", "inactive" - changes device status - ex: 'new_status=active' will change device status to 'active')
+    
+_output - successful change:_
+
+    ["success: device modified"]
+   
+_output - device not found:_
+
+_output - error:_
+
+_sample curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/modify-device/ -d "serial_number= c39ad28ab13a9093439670d89c0a1140" -d "new_brand=TwoPlus&new_type=stationary phone"
