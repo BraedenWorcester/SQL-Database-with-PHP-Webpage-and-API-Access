@@ -1,4 +1,8 @@
- <form action="query.php" method="post">
+<?php 
+session_destroy(); 
+?>
+
+<form action="query.php" method="post">
 	Search Devices<br>
 	------------------------------------------------------------------------------------------------------------------------<br>
 	<label for="queryBy">Query by:</label><br>

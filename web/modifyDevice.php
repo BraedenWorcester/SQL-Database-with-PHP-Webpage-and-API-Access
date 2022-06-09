@@ -5,17 +5,16 @@
 
 <?php
 $un = 'webuser';
-$pw = 'somepassword'; # password redacted for obvious reasons
+$pw = 'redacted';
 $db = 'equipment';
 $host = 'localhost';
 $dblink = new mysqli($host, $un, $pw, $db);
 
+foreach($_POST as $key => $value) {
+    $_POST[$key] = $dblink->real_escape_string($value);
+}
+
 if(isset($_POST['change'])){
-	if((preg_match('#^[A-Z0-9 ]+$#i',$_POST['serial_number_new']) == false && $_POST['serial_number_new'] != "") ||
-	   (preg_match('#^[A-Z0-9 ]+$#i',$_POST['brand']) == false && $_POST['brand'] != "")||
-	   (preg_match('#^[A-Z0-9 ]+$#i',$_POST['type']) == false && $_POST['type'] != "")) {	
-		die("Invalid Modification: Invalid characters");
-	}
 	session_start();
 	$sql = "update devices
 			set ";

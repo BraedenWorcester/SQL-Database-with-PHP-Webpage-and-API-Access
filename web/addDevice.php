@@ -5,7 +5,7 @@
 
 <?php
 $un = 'webuser';
-$pw = 'somepassword'; # password redacted for obvious reasons
+$pw = 'redacted';
 $db = 'equipment';
 $host = 'localhost';
 $dblink = new mysqli($host, $un, $pw, $db);
@@ -19,14 +19,13 @@ if ($_POST["brand"] == "") {
 if ($_POST["type"] == "") {
 	die("Invalid Device: Device requires 'type'");
 }
-if(preg_match('#^[A-Z0-9 ]+$#i',$_POST["brand"]) == false || 
-   preg_match('#^[A-Z0-9 ]+$#i',$_POST["type"]) == false || 
-   preg_match('#^[A-Z0-9 ]+$#i',$_POST["serial_number"]) == false) {	
-	die("Invalid Device: Invalid characters");
-}
+
+$brand = $dblink->real_escape_string($_POST["brand"]);
+$type = $dblink->real_escape_string($_POST["type"]);
+$serial_number = $dblink->real_escape_string($_POST["serial_number"]);
 
 $sql = "insert into devices (serial_number, brand, type, status)
-		values ('".$_POST["serial_number"]."', '".$_POST["brand"]."', '".$_POST["type"]."', 'active')";
+		values ('".$serial_number."', '".$brand."', '".$type."', 'active')";
 $result = $dblink->query($sql) or 
 		die("Uh oh, $sql failed! $dblink->error");
 echo "Device successfully added"

@@ -5,13 +5,16 @@
 
 <?php
 $un = 'webuser';
-$pw = 'somepassword'; # password redacted for obvious reasons
+$pw = 'redacted';
 $db = 'equipment';
 $host = 'localhost';
 $dblink = new mysqli($host, $un, $pw, $db);
 $dir = "/var/www/html/device_files/";
 session_start();
 
+foreach($_POST as $key => $value) {
+    $_POST[$key] = $dblink->real_escape_string($value);
+}
 
 if (isset($_POST['downloading'])){
 	if($_POST['downloadfile'] != ""){
@@ -83,9 +86,6 @@ elseif (isset($_POST['uploading'])){
 
 if ($_POST["serial_number"] == "" && !isset($_POST['uploading']) && !isset($_POST['deleting']) && !isset($_POST['downloading'])) {
 	die("Invalid Device: Device requires 'serial number'");
-}
-if(preg_match('#^[A-Z0-9 ]+$#i',$_POST["serial_number"]) != true){
-	die("invalid Device: invalid characters");
 }
 $sql = "select device_id from devices where serial_number = '".$_POST['serial_number']."'";
 $result = $dblink->query($sql) or 

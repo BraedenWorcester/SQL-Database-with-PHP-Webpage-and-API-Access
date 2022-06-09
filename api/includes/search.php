@@ -1,9 +1,13 @@
 <?php
 $un = 'webuser';
-$pw = 'somepassword'; # password redacted for obvious reasons
+$pw = 'redacted'; # redacted for obvious reasons
 $db = 'equipment';
 $host = 'localhost';
 $dblink = new mysqli($host, $un, $pw, $db);
+
+foreach($_POST as $key => $value) {
+    $_POST[$key] = $dblink->real_escape_string($value);
+}
 
 $return_columns = explode(",", "device_id,".$_POST["return_columns"]);
 
