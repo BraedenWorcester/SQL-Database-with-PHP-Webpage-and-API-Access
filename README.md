@@ -8,7 +8,7 @@ The schema for the database is relatively simple. There is a 'devices' table whe
 
 # Webpage
 
-The webpage can be accessed by visiting the server address in a browser, https://ec2-3-91-97-58.compute-1.amazonaws.com/ (demo pictures below if you're hesitant to go clicking links willy nilly). My main goal was to provide a clear interface with which a human can perform data queries that would otherwise require handtyped (and potentially damaging) SQL commands.
+The webpage can be accessed by visiting the server address in a browser, https://ec2-3-91-97-58.compute-1.amazonaws.com/ (demo pictures below if you're hesitant to go clicking links willy nilly). My main goal was to provide a clear interface with which a human can perform data queries that would otherwise require handtyped (and potentially dangerous) SQL commands.
 
 Screengrab of search query GUI:
 
@@ -50,17 +50,18 @@ _optional:_
 _output:_
 
     {
-    "num_rows": number_of_returned_rows,
-    device_id_1{"column_name_1":"column_value_1","column_name_2":"column_value_2","column_name_3":"column_value_3",...},
-    device_id_2{"column_name_1":"column_value_1","column_name_2":"column_value_2","column_name_3":"column_value_3",...},
-    device_id_3{"column_name_1":"column_value_1","column_name_2":"column_value_2","column_name_3":"column_value_3",...},
+    "num_rows": $number_of_returned_rows_int,
+    $device_id_1_int{$column_name_1_str:$column_value_1_str,$column_name_2_str:$column_value_2_str,$column_name_3_str:$column_value_3_str,...},
+    $device_id_2_int{$column_name_1_str:$column_value_1_str,$column_name_2_str:$column_value_2_str,$column_name_3_str:$column_value_3_str,...},
+    $device_id_3_int{$column_name_1_str:$column_value_1_str,$column_name_2_str:$column_value_2_str,$column_name_3_str:$column_value_3_str,...},
     ...
     }
 
 _sample curl:_
 
     curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/search/ -d "brand=microsoft&type=laptop" -d "exact=true&return_columns=serial_number,status"
-    
+  
+  
 **/modify-device**
 
  _requires at least one identifier:_
@@ -79,10 +80,55 @@ _output - successful change:_
 
     ["success: device modified"]
    
-_output - device not found:_
+_output - serial_number not found:_
 
-_output - error:_
+    ["error: device with serial_number '$identifying_serial_number_input_str' not found"]
+    
+_output - device_id not found:_
+
+    ["error: device with device_id '$identifying_device_id_input_str' not found"]
+
+_output - missing serial_number or device_id:_
+
+    ["error: require input for at least one of: device_id, serial_number"]
+    
+_output - no changes specified:_
+
+    ["error: require input for at least one of: new_serial_number, new_brand, new_type, new_status"]
 
 _sample curl:_
 
-    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/modify-device/ -d "serial_number= c39ad28ab13a9093439670d89c0a1140" -d "new_brand=TwoPlus&new_type=stationary phone"
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/modify-device/ -d "serial_number=c39ad28ab13a9093439670d89c0a1140" -d "new_brand=TwoPlus&new_type=stationary phone"
+
+
+**/add-device**
+
+_required device initializers:_
+
+    POST serial_number
+    POST brand
+    POST type
+    
+_optional device initializer:_
+
+    POST status (valid inputs: "active", "inactive" - defaults to inactive w/ warning in output)
+    
+_output - successful:_
+
+    ["success: device added"]
+    
+_output - successful w/ default status:_
+
+    ["success: device added", "warning: status defaulted to inactive"]
+    
+_output - missing serial_number:_
+
+    ["error: require input for serial_number"]
+    
+_output - missing brand:_
+
+    ["error: require input for brand"]
+    
+_output - missing type:_
+
+    ["error: require input for type"]
