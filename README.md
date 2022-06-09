@@ -31,9 +31,9 @@ Other options available on site: add device, modify device (change serial number
 
 # API
 
-The API is accessed through the server address. List of commands below (all output is in JSON, newlines are for demonstration and are not present in actual output):
+The API is accessed through the server address. List of commands below (all output is in JSON, newlines are for demonstration and not present in actual output):
 
-**search**
+**/search**
 
  _requires at least one of:_
   
