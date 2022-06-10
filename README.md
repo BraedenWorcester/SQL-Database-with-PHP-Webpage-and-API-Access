@@ -168,13 +168,31 @@ _sample curl:_
      POST serial_number
      POST device_id
      
- _requires at least one operation:_
+ _requires operation (only one operation will be executed - operations are listed in descending precedence:_
  
-     POST delete_file (comma deliminated list of files to delete)
      POST download_file (comma deliminated list of files to download)
-     FILE $file_path_to_upload_str (file to upload - if there are 'i' duplicate files, '-i' is appended to basename, ex: test3.pdf w/ 3 duplicates is test3-3.pdf, may upload multiple files)
+     POST delete_file (comma deliminated list of files to delete)
+     FILE $file_path_to_upload_str (file to upload - if there are 'i' duplicate files, '-i' is appended to basename, ex: test3.pdf w/ 3 duplicates is test3-3.pdf - may upload multiple files)
      
-     
+_output - download:_
+
+    .zip file w/ found files
+    
+_output - removal [success, fail, possible fail]:_
+
+    [
+    "successful delete: $file_to_delete_input_1_str", 
+    "failed delete: $file_to_delete_input_2_str (SQL failure)", 
+    "possible failed delete: $file_to_delete_input_3_str (failed to unlink - file may not exist)"
+    ]
+    
+_output - upload [success, fail]:_
+
+    [
+    "successful delete: $file_to_upload_input_1_str", 
+    "failed delete: $file_to_upload_input_2_str (SQL failure)"
+    ]
+    
 _sample download curl:_
 
     curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/manage-device-files/ -d "serial_number=db4734761a9d5a8d1f98d9e7fc383996" -d "download_file=test1.pdf" > test1.pdf
