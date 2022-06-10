@@ -195,4 +195,12 @@ _output - upload [success, fail]:_
     
 _sample download curl:_
 
-    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/manage-device-files/ -d "serial_number=db4734761a9d5a8d1f98d9e7fc383996" -d "download_file=test1.pdf" > test1.pdf
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/manage-device-files/ -d "serial_number=db4734761a9d5a8d1f98d9e7fc383996" -d "download_file=file1,file2,file3"
+    
+_sample delete curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/manage-device-files/ -d "serial_number=db4734761a9d5a8d1f98d9e7fc383996" -d "delete_file=file1,file2,file3"
+    
+_sample upload curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/manage-device-files/ -F "file1=@directory/filename1.extension" -F "file2=@directory/filename2.extension" -F "serial_number=db4734761a9d5a8d1f98d9e7fc383996" 
