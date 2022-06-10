@@ -132,3 +132,49 @@ _output - missing brand:_
 _output - missing type:_
 
     ["error: require input for type"]
+
+_sample curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/add-device/ -d "serial_number=newnumber&brand=newbrand&type=newtype"
+    
+**/remove-device**
+
+ _requires at least one identifier:_
+ 
+     POST serial_number
+     POST device_id
+     
+ _output - successful removal:_
+
+    ["success: device is removed"]
+   
+_output - serial_number not found:_
+
+    ["error: device with serial_number '$identifying_serial_number_input_str' not found"]
+    
+_output - device_id not found:_
+
+    ["error: device with device_id '$identifying_device_id_input_str' not found"]
+    
+_sample curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/remove-device/ -d "serial_number= testnumber"
+    
+    
+**/manage-device-files**
+
+ _requires at least one identifier:_
+ 
+     POST serial_number
+     POST device_id
+     
+ _requires at least one operation:_
+ 
+     POST delete_file (comma deliminated list of files to delete)
+     POST download_file (comma deliminated list of files to download)
+     FILE $file_path_to_upload_str (file to upload - if there are 'i' duplicate files, '-i' is appended to basename, ex: test3.pdf w/ 3 duplicates is test3-3.pdf, may upload multiple files in one command)
+     
+     
+_sample download curl:_
+
+    curl -k https://ec2-3-91-97-58.compute-1.amazonaws.com/manage-device-files/ -d "serial_number=db4734761a9d5a8d1f98d9e7fc383996" -d "download_file=test1.pdf" > test1.pdf
