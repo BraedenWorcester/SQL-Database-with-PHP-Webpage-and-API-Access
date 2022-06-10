@@ -172,7 +172,7 @@ _sample curl:_
  
      POST delete_file (comma deliminated list of files to delete)
      POST download_file (comma deliminated list of files to download)
-     FILE $file_path_to_upload_str (file to upload - if there are 'i' duplicate files, '-i' is appended to basename, ex: test3.pdf w/ 3 duplicates is test3-3.pdf, may upload multiple files in one command)
+     FILE $file_path_to_upload_str (file to upload - if there are 'i' duplicate files, '-i' is appended to basename, ex: test3.pdf w/ 3 duplicates is test3-3.pdf, may upload multiple files)
      
      
 _sample download curl:_
