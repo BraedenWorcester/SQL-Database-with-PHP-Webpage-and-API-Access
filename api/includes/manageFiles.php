@@ -117,6 +117,8 @@ if($_POST['delete_file'] != ""){
             $response=json_encode($output);
         }
     }
+    echo $response;
+    exit;
 }
 
 foreach ($_FILES as $file){
@@ -161,9 +163,9 @@ foreach ($_FILES as $file){
         $output[]="error: SQL query '" . $sql . "' failed to execute";
         $response=json_encode($output);
     }
-		
+	echo $response;
+    exit;
 }
-echo $response . "\n";
 
 $response = null;
 $sql = "select file_id, file_path from device_file_paths where device_id = '" . $_POST["device_id"] . "'";
