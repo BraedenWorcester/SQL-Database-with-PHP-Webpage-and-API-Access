@@ -16,20 +16,34 @@ foreach($_POST as $key => $value) {
     $_POST[$key] = $dblink->real_escape_string($value);
 }
 
+
+
 if (isset($_POST['downloading'])){
 	if($_POST['downloadfile'] != ""){
-		$file = $dir.$_SESSION["device_id"]."/".$_POST['downloadfile'];
-		header('Content-Description: File Transfer');
-		header('Content-Type: application/octet-stream');
-		header('Content-Disposition: attachment; filename='.basename($file));
-		header('Content-Transfer-Encoding: binary');
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Pragma: public');
-		header('Content-Length: ' . filesize($file));
-		ob_clean();
-		flush();
-		readfile($file);
+        $file = $dir.$_SESSION["device_id"]."/".$_POST['downloadfile'];
+        $zip = new ZipArchive;
+        $zip_name = $dir . "tmp/" . time() . ".zip";
+        $zip_base_name = basename($zip_name, '.zip');
+        $count = 0;
+        while(file_exists($zip_name)){
+            $count += 1;
+            $zip_name = $dir.$zip_base_name.'-'.$count.'.zip';
+        }
+        $zip->open($zip_name, ZipArchive::CREATE|ZipArchive::OVERWRITE);
+        $zip->addFile($file, basename($file));
+        $zip->close($zip_name);
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename='.basename($zip_name));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($zip_name));
+        ob_clean();
+        flush();
+        readfile($zip_name);
+        exit;
 	}
 }
 

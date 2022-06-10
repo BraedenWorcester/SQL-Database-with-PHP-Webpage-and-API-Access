@@ -42,9 +42,25 @@ $sql = rtrim($sql, ',') . " where ";
 
 if ($_POST["device_id"] != null){
 	$sql = $sql . "device_id = '" . $_POST["device_id"] . "' ";
+    if ($dblink->query("select device_id from devices where device_id = '" . $_POST["device_id"] . "' ")->num_rows == 0){
+        header('Content-Type: application/json');
+        header('HTTP/1.1 200 OK');
+        $output[]="error: device with device_id '" . $_POST["device_id"] . "' not found";
+        $response=json_encode($output);
+        echo $response;
+        die();
+    }
 }
 else if ($_POST["serial_number"] != null){
 	$sql = $sql . "serial_number = '" . $_POST["serial_number"] . "' ";
+    if ($dblink->query("select device_id from devices where serial_number = '" . $_POST["serial_number"] . "' ")->num_rows == 0){
+        header('Content-Type: application/json');
+        header('HTTP/1.1 200 OK');
+        $output[]="error: device with serial_number '" . $_POST["serial_number"] . "' not found";
+        $response=json_encode($output);
+        echo $response;
+        die();
+    }
 }
 else {
 	header('Content-Type: application/json');
