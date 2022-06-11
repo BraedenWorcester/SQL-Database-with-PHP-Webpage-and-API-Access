@@ -168,7 +168,7 @@ _sample curl:_
      POST serial_number
      POST device_id
      
- _requires operation (only one operation will be executed - operations are listed in descending precedence:_
+ _requires operation (only one operation will be executed - operations are listed in descending precedence):_
  
      POST download_file (comma deliminated list of files to download)
      POST delete_file (comma deliminated list of files to delete)
