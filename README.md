@@ -8,7 +8,7 @@ The schema for the database is relatively simple. There is a 'devices' table whe
 
 # Webpage
 
-The webpage can be accessed by visiting the server address in a browser, https://ec2-3-91-97-58.compute-1.amazonaws.com/ (the certificate has long since expired so your browser will probably complain, there are some screenshots below if you don't feel comfortable visiting the site directly). My main goal was to provide a clear interface with which a human can perform data queries that would otherwise require handtyped (and potentially dangerous) SQL commands.
+The webpage can be accessed by visiting the server address in a browser, https://ec2-3-91-97-58.compute-1.amazonaws.com/ (the certificate has long since expired so your browser will probably complain, there are some screenshots below if you don't feel comfortable visiting the site directly). My main goal was to provide a clear interface with which a human can perform data queries that would otherwise require handtyped (and potentially dangerous) SQL commands. I did my best to sanitize all the input to prevent SQL injection, but I also think it'd be really funny if someone managed to do it anyways, so you have my blessing to try and wreck the database.
 
 Screengrab of search query GUI:
 
